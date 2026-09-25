@@ -3289,7 +3289,7 @@ if(!settings.steps) settings.steps = {};
 if(!settings.reminders) settings.reminders = {};
 if(!settings.habitMeta) settings.habitMeta = {};
 if(settings.notifsEnabled === undefined) settings.notifsEnabled = true;
-save(K_SET, settings);
+localStorage.setItem(K_SET, JSON.stringify(settings)); // تطبيع افتراضية محليًا بس - من غير رفع فوري للسيرفر، عشان ميدهسش بيانات حقيقية لسه ما وصلتش من فايربيز
 ITEMS.forEach(it=&gt;{ if(settings.goals[it.id]===undefined &amp;&amp; it.weeklyGoal!==undefined) settings.goals[it.id]=it.weeklyGoal; });
 
 function openReminderSettings(){
