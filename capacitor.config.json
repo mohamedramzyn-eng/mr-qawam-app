@@ -1,0 +1,22 @@
+{
+  "appId": "com.qawam.mr",
+  "appName": "MR Qawam",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon_config_sample",
+      "iconColor": "#0f2242",
+      "sound": "beep.wav"
+    },
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0f2242",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    }
+  }
+}
