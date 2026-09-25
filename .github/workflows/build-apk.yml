@@ -1,48 +1,46 @@
-name: Build APK
+name: Build Android APK
 
 on:
   push:
-    branches: [ main, master ]
-  workflow_dispatch: {}
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/package-lock@v3
         with:
-          node-version: '20'
+          node-version: 18
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - name: Install Dependencies
+        run: |
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '17'
 
-      - name: Install npm dependencies
-        run: npm install
+      - name: Add Android Platform & Sync
+        run: |
+          npx cap add android || true
+          npx cap sync android
 
-      - name: Add Android platform
-        run: npx cap add android
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
-      - name: Generate app icons
-        run: npx capacitor-assets generate --android
-
-      - name: Sync web assets into the Android project
-        run: npx cap sync android
-
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew
-
-      - name: Build debug APK
-        run: cd android && ./gradlew assembleDebug --stacktrace
-
-      - name: Upload APK as a downloadable artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: mr-qawam-apk
+          name: MR-Qawam-App
           path: android/app/build/outputs/apk/debug/app-debug.apk
